@@ -251,7 +251,7 @@ impl Game {
         let time_left = (30.0 - self.game_time).max(0.0);
         execute!(
             stdout,
-            MoveTo(self.width - 15, 2),
+            MoveTo(self.width.saturating_sub(15), 2),
             Print(format!("Time: {:.1}s", time_left))
         )?;
 
@@ -264,7 +264,7 @@ impl Game {
         let hit_y = self.hit_zone as u16;
         execute!(
             stdout,
-            MoveTo(lane_x - 3, hit_y),
+            MoveTo(lane_x.saturating_sub(3), hit_y),
             SetForegroundColor(Color::Green),
             Print("══╪══"),
             ResetColor
@@ -326,7 +326,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 10, center_y - 6),
+            MoveTo(center_x.saturating_sub(10), center_y.saturating_sub(6)),
             SetForegroundColor(Color::Cyan),
             Print("═══════════════════════"),
             ResetColor
@@ -334,7 +334,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 5, center_y - 5),
+            MoveTo(center_x.saturating_sub(5), center_y.saturating_sub(5)),
             SetForegroundColor(Color::Yellow),
             Print("GAME OVER!"),
             ResetColor
@@ -342,17 +342,17 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 10, center_y - 4),
+            MoveTo(center_x.saturating_sub(10), center_y.saturating_sub(4)),
             SetForegroundColor(Color::Cyan),
             Print("═══════════════════════"),
             ResetColor
         )?;
 
-        execute!(stdout, MoveTo(center_x - 10, center_y - 2), Print(format!("Final Score: {}", self.score)))?;
-        execute!(stdout, MoveTo(center_x - 10, center_y - 1), Print(format!("Max Combo: x{}", self.max_combo)))?;
-        execute!(stdout, MoveTo(center_x - 10, center_y + 1), SetForegroundColor(Color::Green), Print(format!("Perfect: {}", self.perfect_hits)), ResetColor)?;
-        execute!(stdout, MoveTo(center_x - 10, center_y + 2), SetForegroundColor(Color::Cyan), Print(format!("Good: {}", self.good_hits)), ResetColor)?;
-        execute!(stdout, MoveTo(center_x - 10, center_y + 3), SetForegroundColor(Color::Red), Print(format!("Miss: {}", self.misses)), ResetColor)?;
+        execute!(stdout, MoveTo(center_x.saturating_sub(10), center_y.saturating_sub(2)), Print(format!("Final Score: {}", self.score)))?;
+        execute!(stdout, MoveTo(center_x.saturating_sub(10), center_y.saturating_sub(1)), Print(format!("Max Combo: x{}", self.max_combo)))?;
+        execute!(stdout, MoveTo(center_x.saturating_sub(10), center_y + 1), SetForegroundColor(Color::Green), Print(format!("Perfect: {}", self.perfect_hits)), ResetColor)?;
+        execute!(stdout, MoveTo(center_x.saturating_sub(10), center_y + 2), SetForegroundColor(Color::Cyan), Print(format!("Good: {}", self.good_hits)), ResetColor)?;
+        execute!(stdout, MoveTo(center_x.saturating_sub(10), center_y + 3), SetForegroundColor(Color::Red), Print(format!("Miss: {}", self.misses)), ResetColor)?;
 
         let total_notes = self.perfect_hits + self.good_hits + self.misses;
         let accuracy = if total_notes > 0 {
@@ -363,7 +363,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 10, center_y + 5),
+            MoveTo(center_x.saturating_sub(10), center_y + 5),
             SetForegroundColor(Color::Yellow),
             Print(format!("Accuracy: {:.1}%", accuracy)),
             ResetColor
@@ -371,7 +371,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 15, self.height - 2),
+            MoveTo(center_x.saturating_sub(15), self.height.saturating_sub(2)),
             SetForegroundColor(Color::DarkGrey),
             Print("Press any key to exit..."),
             ResetColor

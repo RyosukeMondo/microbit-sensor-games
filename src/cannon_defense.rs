@@ -296,7 +296,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(self.width - 25, 2),
+            MoveTo(self.width.saturating_sub(25), 2),
             Print("HP: "),
             SetForegroundColor(health_color),
             Print("█".repeat(filled)),
@@ -397,7 +397,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 10, center_y - 6),
+            MoveTo(center_x.saturating_sub(10), center_y.saturating_sub(6)),
             SetForegroundColor(Color::Red),
             Print("═══════════════════════"),
             ResetColor
@@ -405,7 +405,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 5, center_y - 5),
+            MoveTo(center_x.saturating_sub(5), center_y.saturating_sub(5)),
             SetForegroundColor(Color::Red),
             Print("GAME OVER!"),
             ResetColor
@@ -413,7 +413,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 10, center_y - 4),
+            MoveTo(center_x.saturating_sub(10), center_y.saturating_sub(4)),
             SetForegroundColor(Color::Red),
             Print("═══════════════════════"),
             ResetColor
@@ -421,7 +421,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 10, center_y - 2),
+            MoveTo(center_x.saturating_sub(10), center_y.saturating_sub(2)),
             SetForegroundColor(Color::Yellow),
             Print(format!("Final Score: {}", self.score)),
             ResetColor
@@ -429,13 +429,13 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 10, center_y - 1),
+            MoveTo(center_x.saturating_sub(10), center_y.saturating_sub(1)),
             Print(format!("Waves Survived: {}", self.wave))
         )?;
 
         execute!(
             stdout,
-            MoveTo(center_x - 10, center_y),
+            MoveTo(center_x.saturating_sub(10), center_y),
             SetForegroundColor(Color::Cyan),
             Print(format!("Enemies Destroyed: {}", self.score / 10)),
             ResetColor
@@ -443,13 +443,13 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(center_x - 10, center_y + 2),
+            MoveTo(center_x.saturating_sub(10), center_y + 2),
             Print(format!("Survival Time: {:.1}s", self.game_time))
         )?;
 
         execute!(
             stdout,
-            MoveTo(center_x - 15, self.height - 2),
+            MoveTo(center_x.saturating_sub(15), self.height.saturating_sub(2)),
             SetForegroundColor(Color::DarkGrey),
             Print("Press any key to exit..."),
             ResetColor
