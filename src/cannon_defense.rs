@@ -506,6 +506,15 @@ fn sensor_reader_thread(sensor_data: Arc<Mutex<Option<SensorData>>>) -> Result<(
     }
 }
 
+fn install_panic_hook() {
+    let original_hook = std::panic::take_hook();
+    std::panic::set_hook(Box::new(move |info| {
+        let _ = terminal::disable_raw_mode();
+        let _ = execute!(stdout(), Show, LeaveAlternateScreen);
+        original_hook(info);
+    }));
+}
+
 fn main() -> Result<()> {
     let sensor_data = Arc::new(Mutex::new(None));
     let sensor_data_clone = Arc::clone(&sensor_data);
@@ -521,6 +530,7 @@ fn main() -> Result<()> {
     terminal::enable_raw_mode()?;
     let mut stdout = stdout();
     execute!(stdout, EnterAlternateScreen, Hide)?;
+    install_panic_hook();
 
     let (width, height) = terminal::size()?;
     let mut game = Game::new(width, height);
