@@ -277,7 +277,8 @@ impl Game {
         )?;
 
         let health_bar_width = 20;
-        let filled = (self.health as f32 / 100.0 * health_bar_width as f32) as usize;
+        let clamped_health = self.health.max(0) as f32;
+        let filled = (clamped_health / 100.0 * health_bar_width as f32) as usize;
         let health_color = if self.health > 60 {
             Color::Green
         } else if self.health > 30 {
@@ -362,7 +363,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(2, self.height - 1),
+            MoveTo(2, self.height.saturating_sub(1)),
             SetForegroundColor(Color::DarkGrey),
             Print("TILT the micro:bit to aim and shoot! Keep enemies away from center!"),
             ResetColor

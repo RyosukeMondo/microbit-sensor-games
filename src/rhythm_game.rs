@@ -288,7 +288,7 @@ impl Game {
 
         execute!(
             stdout,
-            MoveTo(2, self.height - 1),
+            MoveTo(2, self.height.saturating_sub(1)),
             SetForegroundColor(Color::DarkGrey),
             Print("SHAKE the micro:bit when ◆ hits the green zone!"),
             ResetColor
