@@ -6,7 +6,6 @@ use crossterm::{
     style::{Color, Print, ResetColor, SetForegroundColor},
     terminal::{self, Clear, ClearType, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use serialport::SerialPort;
 use std::io::{stdout, BufRead, BufReader, Write};
 use std::sync::{Arc, Mutex};
 use std::thread;
@@ -47,7 +46,6 @@ impl SensorData {
 #[derive(Debug, Clone)]
 struct Beat {
     position: f32,
-    lane: usize,
     hit: bool,
 }
 
@@ -106,12 +104,10 @@ impl Game {
         ];
 
         let pattern = &patterns[self.game_time as usize % patterns.len()];
-        let base_offset = self.game_time;
 
         for &offset in pattern {
             self.beats.push(Beat {
                 position: -(offset * self.beat_speed),
-                lane: 0,
                 hit: false,
             });
         }

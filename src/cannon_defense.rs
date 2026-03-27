@@ -6,7 +6,6 @@ use crossterm::{
     style::{Color, Print, ResetColor, SetForegroundColor},
     terminal::{self, Clear, ClearType, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use serialport::SerialPort;
 use std::io::{stdout, BufRead, BufReader, Write};
 use std::sync::{Arc, Mutex};
 use std::thread;
@@ -171,9 +170,6 @@ impl Game {
     }
 
     fn spawn_enemy(&mut self) {
-        use std::f32::consts::PI;
-
-        let angle = (self.game_time * 137.5).to_radians();
         let margin = 2.0;
 
         let spawn_pos = if rand_bool(self.game_time) {
@@ -182,12 +178,10 @@ impl Game {
             } else {
                 Vec2::new(self.width as f32 - margin, (self.game_time * 97.0) % (self.height as f32 - margin * 2.0) + margin)
             }
+        } else if rand_bool(self.game_time * 3.0) {
+            Vec2::new((self.game_time * 113.0) % (self.width as f32 - margin * 2.0) + margin, margin)
         } else {
-            if rand_bool(self.game_time * 3.0) {
-                Vec2::new((self.game_time * 113.0) % (self.width as f32 - margin * 2.0) + margin, margin)
-            } else {
-                Vec2::new((self.game_time * 127.0) % (self.width as f32 - margin * 2.0) + margin, self.height as f32 - margin)
-            }
+            Vec2::new((self.game_time * 127.0) % (self.width as f32 - margin * 2.0) + margin, self.height as f32 - margin)
         };
 
         let base_speed = 5.0 + (self.wave as f32 * 0.5);
