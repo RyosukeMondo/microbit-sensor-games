@@ -217,11 +217,9 @@ impl Game {
         for enemy in &mut self.enemies {
             enemy.update(dt);
 
-            if enemy.pos.distance_to(&self.center) < 2.0 {
-                if enemy.is_alive() {
-                    self.health -= 10;
-                    enemy.health = 0;
-                }
+            if enemy.pos.distance_to(&self.center) < 2.0 && enemy.is_alive() {
+                self.health -= 10;
+                enemy.health = 0;
             }
         }
 

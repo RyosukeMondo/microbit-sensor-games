@@ -96,14 +96,14 @@ impl Game {
     }
 
     fn spawn_beat_pattern(&mut self) {
-        let patterns = vec![
-            vec![0.0, 1.0, 2.0, 3.0],
-            vec![0.0, 0.5, 1.0, 1.5, 2.0, 2.5],
-            vec![0.0, 1.0, 1.5, 2.5, 3.0, 4.0],
-            vec![0.0, 0.75, 1.5, 2.25, 3.0],
+        let patterns: &[&[f32]] = &[
+            &[0.0, 1.0, 2.0, 3.0],
+            &[0.0, 0.5, 1.0, 1.5, 2.0, 2.5],
+            &[0.0, 1.0, 1.5, 2.5, 3.0, 4.0],
+            &[0.0, 0.75, 1.5, 2.25, 3.0],
         ];
 
-        let pattern = &patterns[self.game_time as usize % patterns.len()];
+        let pattern = patterns[self.game_time as usize % patterns.len()];
 
         for &offset in pattern {
             self.beats.push(Beat {
@@ -139,13 +139,7 @@ impl Game {
             self.process_shake();
         }
 
-        self.beats.retain(|beat| {
-            if beat.position > self.height as f32 + 2.0 && !beat.hit {
-                false
-            } else {
-                true
-            }
-        });
+        self.beats.retain(|beat| beat.hit || beat.position <= self.height as f32 + 2.0);
 
         let mut missed = 0;
         for beat in &mut self.beats {
