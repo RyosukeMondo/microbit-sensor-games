@@ -462,7 +462,7 @@ fn main() -> Result<()> {
             }
         }
 
-        let current_sensor = sensor_data.lock().unwrap().clone();
+        let current_sensor = sensor_data.lock().ok().and_then(|guard| guard.clone());
 
         if !game.update(delta_time, current_sensor) {
             game.show_game_over()?;
